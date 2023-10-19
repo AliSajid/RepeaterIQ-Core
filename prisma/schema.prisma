@@ -1,0 +1,142 @@
+datasource db {
+    url      = env("SUPABASE_DB_URL")
+    provider = "postgresql"
+}
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "@prisma/client"
+}
+
+model User {
+    id          Int    @id @default(autoincrement())
+    email       String @unique
+    username    String @unique
+    preferences Json?
+    roles       Role[]
+
+    // User-Response One-to-Many Relationship (responses by the user)
+    responses     Response[]
+    // User-Flag One-to-Many Relationship (flags set by the user)
+    flags         Flag[]
+    // User-Exam One-to-Many Relationship (exams taken by the user)
+    exams         Exam[]
+    // User-Question One-to-Many Relationship (questions seen by the user)
+    seenQuestions Question[]
+    Statistic     Statistic[]
+    Role          Role?       @relation(fields: [roleId], references: [id])
+    roleId        Int?
+    Role          Role?       @relation(fields: [roleId], references: [id])
+
+    @@map("users")
+}
+
+model Question {
+    id        Int        @id @default(autoincrement())
+    text      String
+    options   Json
+    answer    String
+    category  String
+    // Question-Response One-to-Many Relationship (responses to the question)
+    responses Response[]
+    // Question-Exam One-to-Many Relationship (questions in the exam)
+    exams     Exam[]
+    // Question-Statistic One-to-One Relationship (statistics for the question)
+    statistic Statistic?
+    User      User?      @relation(fields: [userId], references: [id])
+    userId    Int?
+    Exam      Exam?      @relation(fields: [examId], references: [id])
+    examId    Int?
+    Flag      Flag[]
+    Exam      Exam?      @relation(fields: [examId], references: [id])
+
+    @@map("questions")
+}
+
+model Response {
+    id         Int        @id @default(autoincrement())
+    text       String
+    // Response-User Many-to-One Relationship (user who made the response)
+    user       User       @relation(fields: [userId], references: [id])
+    userId     Int
+    // Response-Question Many-to-One Relationship (question to which the response was made)
+    question   Question   @relation(fields: [questionId], references: [id])
+    questionId Int
+    // Response-Exam Many-to-One Relationship (exam in which the response was made)
+    exam       Exam?      @relation(fields: [examId], references: [id])
+    examId     Int?
+    // Response-Statistic One-to-One Relationship (statistics for the response)
+    statistic  Statistic?
+
+    @@map("responses")
+}
+
+model Exam {
+    id         Int        @id @default(autoincrement())
+    name       String
+    // Exam-User Many-to-One Relationship (user who took the exam)
+    user       User       @relation(fields: [userId], references: [id])
+    userId     Int
+    // Exam-Question Many-to-Many Relationship (questions in the exam)
+    questions  Question[] @relation("ExamQuestion", references: [id])
+    // Exam-Statistic One-to-One Relationship (statistics for the exam)
+    statistic  Statistic?
+    Question   Question?  @relation(fields: [questionId], references: [id])
+    questionId Int?
+    Response   Response[]
+    Flag       Flag[]
+
+    @@map("exams")
+}
+
+model Statistic {
+    id         Int       @id @default(autoincrement())
+    // Statistic-Question One-to-One Relationship (question to which the statistic belongs)
+    question   Question? @relation(fields: [questionId], references: [id])
+    questionId Int?
+    // Statistic-Response One-to-One Relationship (response to which the statistic belongs)
+    response   Response? @relation(fields: [responseId], references: [id])
+    responseId Int?
+    // Statistic-Exam One-to-One Relationship (exam to which the statistic belongs)
+    exam       Exam?     @relation(fields: [examId], references: [id])
+    examId     Int?
+    // Statistic-User One-to-One Relationship (user to which the statistic belongs)
+    user       User?     @relation(fields: [userId], references: [id])
+    userId     Int?
+    // Statistic-Category One-to-One Relationship (category to which the statistic belongs)
+    category   String
+    // Statistic-Option One-to-One Relationship (option to which the statistic belongs)
+    option     String
+    // Statistic-Count One-to-One Relationship (count of responses for the category/option)
+    count      Int
+
+    @@map("statistics")
+}
+
+model Role {
+    id     Int    @id @default(autoincrement())
+    name   String
+    // Role-User Many-to-Many Relationship (users with the role)
+    users  User[] @relation("UserRole", references: [id])
+    User   User?  @relation(fields: [userId], references: [id])
+    userId Int?
+
+    @@map("roles")
+}
+
+model Flag {
+    id         Int      @id @default(autoincrement())
+    // Flag-User Many-to-One Relationship (user who set the flag)
+    user       User     @relation(fields: [userId], references: [id])
+    userId     Int
+    // Flag-Question Many-to-One Relationship (question which was flagged)
+    question   Question @relation(fields: [questionId], references: [id])
+    questionId Int
+    // Flag-Exam Many-to-One Relationship (exam in which the question was flagged)
+    exam       Exam?    @relation(fields: [examId], references: [id])
+    examId     Int?
+    // Flag-Reason One-to-One Relationship (reason for the flag)
+    reason     String
+
+    @@map("flags")
+}

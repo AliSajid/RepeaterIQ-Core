@@ -12,7 +12,9 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"test:integration": "playwright test",
-		"test:unit": "vitest"
+		"test:unit": "vitest",
+		"db:generate": "prisma generate",
+		"backend:emulate": "supabase start"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.39.0",
@@ -42,7 +44,6 @@
 		"postcss": "^8.4.31",
 		"prettier": "^2.8.8",
 		"prettier-plugin-svelte": "^2.10.1",
-		"prisma": "^5.4.2",
 		"semantic-release": "^22.0.5",
 		"supabase": "^1.106.1",
 		"svelte": "^4.2.1",
@@ -56,6 +57,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@sveltejs/adapter-vercel": "^3.0.3"
+		"@sveltejs/adapter-vercel": "^3.0.3",
+		"prisma": "^5.4.2"
 	}
 }
