@@ -57,6 +57,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: 'Staging'
     needs: Build-and-Test
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
     if: needs.Build-and-Test.result == 'success'
     steps:
       - name: Checkout the Repository
