@@ -100,7 +100,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Populate Preview Variables
-        run: vercel pull --yes --environment=${{env.PROJECT_ENVIRONMENT}} --token=${{ env.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=${{env.PROJECT_ENVIRONMENT}} --token=${{ secrets.VERCEL_TOKEN }}
       - name: Build Project
         run: vercel build --prod --yes --token=${{ env.VERCEL_TOKEN }}
       - name: Deploy to Vercel
