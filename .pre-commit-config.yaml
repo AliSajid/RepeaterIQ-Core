@@ -31,8 +31,8 @@ repos:
     hooks:
       - id: prettier
         additional_dependencies:
-          - prettier@3.0.0
-          - prettier-plugin-svelte@3.0.3
+          - prettier@2.8.8
+          - prettier-plugin-svelte@2.7.0
           - prettier-plugin-tailwindcss@0.4.1
   - repo: https://github.com/Lucas-C/pre-commit-hooks
     rev: v1.5.4

@@ -9,31 +9,31 @@ module.exports = {
     'plugin:jsdoc/recommended-typescript',
     'plugin:svelte/recommended',
     'plugin:svelte/prettier',
-    'prettier',
+    'prettier'
   ],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 2020,
-    extraFileExtensions: ['.svelte'],
+    extraFileExtensions: ['.svelte']
   },
   env: {
     browser: true,
     es2017: true,
-    node: true,
+    node: true
   },
   overrides: [
     {
       files: ['*.svelte'],
       parser: 'svelte-eslint-parser',
       parserOptions: {
-        parser: '@typescript-eslint/parser',
+        parser: '@typescript-eslint/parser'
       },
       rules: {
         'valid-jsdoc': 'off',
-        'require-jsdoc': 'off',
-      },
+        'require-jsdoc': 'off'
+      }
     },
     {
       files: ['*.ts', '*.tsx'],
@@ -43,8 +43,8 @@ module.exports = {
         'valid-jsdoc': 'off',
         'require-jsdoc': 'off',
         'no-unused-vars': ['error', { varsIgnorePattern: '^[ssr|csr|prerender]', args: 'none' }],
-        '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^[ssr|csr|prerender]' }],
-      },
-    },
-  ],
+        '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^[ssr|csr|prerender]' }]
+      }
+    }
+  ]
 };
