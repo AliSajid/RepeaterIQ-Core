@@ -14,7 +14,8 @@
     "test:integration": "playwright test",
     "test:unit": "vitest",
     "db:generate": "prisma generate",
-    "backend:emulate": "supabase start"
+    "backend:emulate": "supabase start",
+    "release": "semantic-release"
   },
   "devDependencies": {
     "@playwright/test": "^1.39.0",
